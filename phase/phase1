@@ -1,0 +1,20 @@
+//author: night
+//date: 2020/08/15
+//so this is the TODO things that i would want to finish in the first phase
+
+//i will make it be very easy :-) ,of course because im too weak to add more 
+//feature,but you can have a try by yourself,right? :-)
+
+// 1.initialization the clock
+// 2.clock driver that provide services for clock task
+// 3.switch the cpu from real mode to protect mode
+// 4.open the paging
+// 5.initialization the GDT
+// 6.initialization the IDT
+// 7.build the concept of process
+// 8.gen two process
+// 9.use the scheduler to switch the process from one to another
+// 10.end
+
+//Now you konw what im going to do at the first phase :-)
+
