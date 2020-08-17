@@ -18,3 +18,16 @@
 
 //Now you konw what im going to do at the first phase :-)
 
+======================
+//update at 2020/08/17
+//add some message about platform that our code run at or other thing
+//should be mentioned
+
+//1.at the frist i just want to keep it simple to work,so i just set the
+//processor into the protected mode from real mode
+
+//2.may will start at the code few days late because at this point i
+//even don't know how to initialization the clock :-) and im look the
+//doc about the ia32 provide by intel,thanks to intel :-) haha.
+
+//i may update this file later.
