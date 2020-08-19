@@ -10,7 +10,8 @@ place where hold the data :-)
 .global start_setup
 
 START_SEG = 0x1000
-GDT_BASE_ADDR_seg = 0xf000
+GDT_BASE_ADDR_seg = 0xf000 //256 gdt_entries
+IDT_BASE_ADDR_seg = 0xf400 //follow the GDT end addr
 STACK_seg = 0xf000
 
 .text
@@ -35,6 +36,10 @@ init_gdt:
 	movw $ax, %ss
 	movw $0, %sp
 	movw %sp, %bp
+	lgdt $gdt_start
+	//lidt $IDT_BASE_ADDR_seg << 16 + 0x4000
+	movw $0x1, %cr0
+	ljmp $0x8, $0x0 
 	
 msg1: .ascii "Hello World"
 
@@ -42,14 +47,21 @@ msg1: .ascii "Hello World"
 gdt_start:
 	.word 0,0,0,0
 
-	.word 0,0,0,0xa
+	.word 0,0xa,0,0
 	.byte 0
 	.byte 0x9b
 	.byte 0xd0
 	.byte 0x0
 
-	.word 0,0,0,0xa
-	.byte 	
+	.word 0,0xa,0,0
+	.byte 0
+	.byte 0x92
+	.byte 0xd0
+	.byte 0x0
+	
+.org IDT_BASE_ADDR_seg 
+idt_start:
+	.word 0,0,0,0
 	
 .org 2045
 end: .ascii "END"
