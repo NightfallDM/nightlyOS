@@ -42,17 +42,27 @@ load_4_sectors:
 	xorw %cx, %cx
 	movb $0x2, %cl
 	movw $LOAD_SEG, %dx
-	movw %dx, %cs
-	xorw %dx, %dx
-	int $0x10
-	cmpb $4, %al
+	movw %dx, %es
+	movw $0x0, %bx
+	//xorw %dx, %dx
+	movw $0x80, %dx
+	int $0x13
+	cmpb $0x0, %ah
 	jne print_error_msg
 	movw $LOAD_SEG, %ax
 	movw %ax, %es
 	movw %ax, %ds
-	jmp %es:0x0	
+	ljmp $LOAD_SEG, $0x0	
 
 print_error_msg:
+	xorw %ax, %ax
+	movb $0x2, %ah
+	movb $0x0, %bh
+	movw $0xb0a, %dx
+	int $0x10
+
+	movw $START_SEG, %ax
+	movw %ax, %es
 	movw $Error_msg, %bp
 	movw $32, %cx
 	movw $0x07, %bx
