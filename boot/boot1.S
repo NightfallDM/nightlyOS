@@ -8,6 +8,8 @@ we set some env and switch from the real mode to the protected mode;
 then we go jump to the "load.c" to read and load the kernel.
 */
 
+#include "asm/e820.h"
+
 .code16 //we are in real mode now :-)
 .global start
 
@@ -16,6 +18,60 @@ start:
 	movw %ax, %es
 	movw %ax, %ds
 	movw %ax, %ss
+
+//get_mm_info
+//use e820h bios int to get the mem map;
+//you can get more message in the below url
+//http://www.ctyme.com/intr/rb-1741.htm
+//reference from linux2.4/setup.S
+
+#define SMAP 0x534d4150 // "SWAP"
+//store the data at 0x0:0x400 (es:di)
+
+get_mm_e820:
+	//put the code just set once :-)
+	movl $0x0, (E820_NR)
+	xorl %ebx, %ebx
+	movw $E820MAP, %di
+jmp_e820:
+	xorl %eax, %eax
+	movw $0xe820, %ax
+	movl $20, %ecx
+	movl $SWAP, %edx
+	int 0x15
+	jc bad_e820
+	cmpl $SWAP, %eax
+	jne bad_e820
+	cmp $E820_RAM, 16(%di)
+//it means we just count the usable memory
+//16(%di) means the "type" field in the mm_map address range descriptor
+//see more detail in the URL gived before
+	jne again_e820 //do not count,do not add the E820NR
+good_e820:
+	movl (E820NR), %eax
+	cmpl $E820MAX, %eax
+	jnl mm_map_finish
+	incl (E820NR) //count
+	movw %di, %ax
+	add $20, %ax
+	movw %ax, %di
+again_e820:
+	cmpl $0x0, %ebx
+	jne jmp_e820
+
+mm_map_finish:
+	jmp set_A20
+
+bad_e820:
+	addl $100, (E820NR) //if err to read,then add 100,so you can check
+	jmp mm88
+
+mm88:
+	movw $0x8800, %ax
+	int 0x15
+	movw %ax, (E820MAP+E820MAX*20) //after the E820MAP, xxx KByte(2-Byte)
+	 
+
 
 //Note that: now the A20 is clear,so the truth is you can acess all the address
 //that in real mode.Because the address(0xffff:0xffff)need 21 lines.
@@ -31,6 +87,7 @@ set_A20:
 switch_protect:
 	lgdt gdtr_value //contain the value should load into gdtr
 //Note: do not use "$" before "gdtr_value" so it can load it's value 
+	cli
 	movw %cr0, %ax
 	xorb $0x1, %ax
 	movw %ax, %cr0
