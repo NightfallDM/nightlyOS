@@ -47,7 +47,7 @@ switch_protect:
 //Now we are in protected mode,start to use 32-bit code
 .code32
 start32:
-	set up the protected-mode data segment registers
+	//set up the protected-mode data segment registers
 	movw $0x1000, %ax
 	movw %ax, %ds
 	movw %ax, %es
