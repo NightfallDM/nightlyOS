@@ -11,15 +11,15 @@
 //read the doc provide by the intel and get more message
 
 // the first descriptor in GDT do not use
-#define SEG_NULLASM
-	.word 0, 0;
+#define SEG_NULLASM		\
+	.word 0, 0;		\
 	.byte 0, 0, 0, 0
 
 //we set the "G" flag, so the every seg max size is "4G"
-#define SEG_ASM(type,base,lim)
-	.word (((lim)>>12)&0xffff), ((base)&0xffff);
-	.byte (((base)>>16)&0xff), ((type)|0x90),
-	      ((((lim)>>28)&0xf)|0xc0), (((base)>>24)&0xff)
+#define SEG_ASM(type,base,lim)				\
+	.word (((lim)>>12)&0xffff), ((base)&0xffff);	\
+	.byte (((base)>>16)&0xff), ((type)|0x90),	\
+	      ((((lim)>>28)&0xf)|0xc0), (((base)>>24)&0xff)		
 
 //Note: 0xc0 mean we set the "G" flag and the "D/B" flag,
 //and the shift of lim should match,first rshift 12 mean the seg

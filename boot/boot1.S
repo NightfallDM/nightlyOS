@@ -8,8 +8,8 @@ we set some env and switch from the real mode to the protected mode;
 then we go jump to the "load.c" to read and load the kernel.
 */
 
-#include "asm/e820.h"
-
+#include "../include/asm/e820.h"
+#include "asm.h"
 .code16 //we are in real mode now :-)
 .global start
 
@@ -19,18 +19,18 @@ start:
 	movw %ax, %ds
 	movw %ax, %ss
 
-//get_mm_info
-//use e820h bios int to get the mem map;
-//you can get more message in the below url
-//http://www.ctyme.com/intr/rb-1741.htm
-//reference from linux2.4/setup.S
+# get_mm_info
+# use e820h bios int to get the mem map;
+# you can get more message in the below url
+# http://www.ctyme.com/intr/rb-1741.htm
+# reference from linux2.4/setup.S
 
-#define SMAP 0x534d4150 // "SWAP"
-//store the data at 0x0:0x400 (es:di)
+#define SWAP 0x534d4150 // "SWAP"
+# store the data at 0x0:0x400 (es:di)
 
 get_mm_e820:
 	//put the code just set once :-)
-	movl $0x0, (E820_NR)
+	movl $0x0, (E820NR)
 	xorl %ebx, %ebx
 	movw $E820MAP, %di
 jmp_e820:
@@ -38,20 +38,20 @@ jmp_e820:
 	movw $0xe820, %ax
 	movl $20, %ecx
 	movl $SWAP, %edx
-	int 0x15
+	int $0x15
 	jc bad_e820
 	cmpl $SWAP, %eax
 	jne bad_e820
-	cmp $E820_RAM, 16(%di)
+	cmpl $E820_RAM, 16(%di)
 //it means we just count the usable memory
 //16(%di) means the "type" field in the mm_map address range descriptor
 //see more detail in the URL gived before
-	jne again_e820 //do not count,do not add the E820NR
+	jne again_e820  # do not count,do not add the E820NR
 good_e820:
 	movl (E820NR), %eax
 	cmpl $E820MAX, %eax
 	jnl mm_map_finish
-	incl (E820NR) //count
+	incl (E820NR) # count
 	movw %di, %ax
 	add $20, %ax
 	movw %ax, %di
@@ -63,13 +63,13 @@ mm_map_finish:
 	jmp set_A20
 
 bad_e820:
-	addl $100, (E820NR) //if err to read,then add 100,so you can check
+	addl $100, (E820NR) # if err to read,then add 100,so you can check
 	jmp mm88
 
 mm88:
 	movw $0x8800, %ax
-	int 0x15
-	movw %ax, (E820MAP+E820MAX*20) //after the E820MAP, xxx KByte(2-Byte)
+	int $0x15
+	movw %ax, (E820MAP+E820MAX*20) # after the E820MAP, xxx KByte(2-Byte)
 	 
 
 
@@ -80,17 +80,17 @@ mm88:
 set_A20:
 	inb $0x92, %al
 	xorb $0x2, %al
-	outb %al, $0x92a
+	outb %al, $0x92
 
 
 //Now we are going to switch to the protected mode :-)
 switch_protect:
-	lgdt gdtr_value //contain the value should load into gdtr
+	lgdt gdtr_value # contain the value should load into gdtr
 //Note: do not use "$" before "gdtr_value" so it can load it's value 
 	cli
-	movw %cr0, %ax
-	xorb $0x1, %ax
-	movw %ax, %cr0
+	movl %cr0, %eax
+	xorl $0x1, %eax
+	movl %eax, %cr0
 
 //in the doc of intel,suggest a long jump follow the mode switch
 //to refresh the segemention reg
@@ -115,8 +115,8 @@ start32:
 
 //set esp = $start,then call the c code "load.c"
 //if return from the c code may mean we should panic :-(
-	movw $start, %esp
-	call loadmain
+	movl $start, %esp
+	jmp (0x7e00) # the address behind this program
 
 //panic and spin
 panic_spin:
@@ -126,11 +126,15 @@ panic_spin:
 //set GDT
 .p2align 2
 gdt:
-	SEG_NULLASM
-	SEG_ASM(S_CODE|SC_RD, 0x0, 0xffffffff) // code seg base:0x0 limit:4G
-	SEG_ASM(S_DATA|SD_WR, 0x0, 0xffffffff) // data seg base:0x0 limit:4G
+	SEG_NULLASM			       # null
+	SEG_ASM(S_CODE|SC_RD, 0x0, 0xffffffff) # code seg base:0x0 limit:4G
+	SEG_ASM(S_DATA|SD_WR, 0x0, 0xffffffff) # data seg base:0x0 limit:4G
 //so,you can see that we just use the flat mode(only one segment)
 
 gdtr_value:
-	.word (gdtr_value - gdt -1)	//"-1" need because this ins bigger "1"
-	.long gdt			//address gdt
+	.word (gdtr_value - gdt -1)	#"-1" need because this ins bigger "1"
+	.long gdt			#address gdt
+/*
+.org 510
+end:
+	.word 0xaa55 */
