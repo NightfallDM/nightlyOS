@@ -19,6 +19,15 @@ start:
 	movw %ax, %ds
 	movw %ax, %ss
 
+# get more sector data store beside this MAR
+load_loader:
+	movw $0x0202, %ax
+	xorw %cx, %cx
+	movw $0x80, %dx
+	movw $0x7e00, %bx
+	int $0x13
+	jc panic_spin
+
 # get_mm_info
 # use e820h bios int to get the mem map;
 # you can get more message in the below url
@@ -134,7 +143,7 @@ gdt:
 gdtr_value:
 	.word (gdtr_value - gdt -1)	#"-1" need because this ins bigger "1"
 	.long gdt			#address gdt
-/*
+
 .org 510
 end:
-	.word 0xaa55 */
+	.word 0xaa55 
