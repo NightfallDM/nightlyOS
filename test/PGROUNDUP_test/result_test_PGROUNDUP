@@ -1,0 +1,12 @@
+contain file:
+	test_and.*
+	test_PGROUNDUP.*
+	test_and
+	test_PGROUNDUP
+
+result:
+	When you put a integer literal in the prog, like 0x0,
+If you do ~ operation with it, it Length take 4 Byte...
+	So ~(0x0) = 0xffffffff :-)  
+
+Note: the same result in 32-bit machine and 64-bit machine.
