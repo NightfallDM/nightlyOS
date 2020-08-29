@@ -10,4 +10,12 @@ typedef unsigned char uint8_t;
 typedef unsigned int uint32_t;
 typedef int uint32_t;
 
+struct Page_e {
+	uint32_t attr: 12;
+	uint32_t addr: 20;
+}__attribute__((packed));
+
+typedef struct Page_e pde_t;
+typedef struct Page_e pte_t;
+
 #endif //_TYPES_H_

@@ -45,4 +45,14 @@ insl(uint32_t port, uint32_t dest_addr, uint32_t cnt){
 			);
 }
 
+static inline void
+lcr3(uint32_t *addr){
+	asm volatile {
+			"movl %0, %%cr3"
+			: 
+			: "r" (addr)
+			:
+	};
+}
+
 #endif //end __X86_H_
