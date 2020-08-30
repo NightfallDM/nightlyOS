@@ -24,4 +24,8 @@ int main(void){
 	// address every section in kernel,but we put some point in kernel
 	// by use "kernel.ld" like "data" and "end".
 	// So now we have more message about the kernel.
+	
+	mpinit(); // in "mp.c"
+	// detect other processors by the "MP Floating Pointer Structure"
+	// see more detail in "Inter MultiProcessor specification 1.4"
 }

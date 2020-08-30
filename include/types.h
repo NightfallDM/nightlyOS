@@ -2,6 +2,10 @@
 #define _TYPES_H_
 
 #define MACHINE_WIDTH 32
+#define TRUE 1
+#define FALSE 0
+
+typedef unsigned char bool_t;
 
 typedef unsigned short uint16_t;
 typedef short int16_t;
