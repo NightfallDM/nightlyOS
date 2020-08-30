@@ -17,6 +17,30 @@ walkpgdir(pde_t *pgdir, void *va, int32_t alloc){
 
 	// 31-22 bit in "va" mean index of pgdir
 	pde = pgdir+((uint32_t)va >> 22);
+	
+	// the entry in pgdir have set PTE_P mean the pgtable have 
+	// already alloc,So do not need to alloc, just return the 
+	// address
+	if(*pde|PTE_P){
+
+		// Note: !!! The high 20-bit of *pde hold the 
+		// physical address of the pte
+		// So ...
+		pte = V2P((uint32_t)(*pde) & ~(0xfff))
+	}else{
+		if(!alloc || (pte = (pte *)kalloc()) == 0){
+			return 0;
+		}
+
+		memset_C(pte, 0, PGSIZE);
+
+		// Note: !!! The high 20-bit of *pde hold the 
+		// physical address of the pte
+		// So ...
+		*pde = P2V(pte)|PTE_P|PTE_W|PTE_U;
+	}
+
+	return ((pte_t *)pte+(((uint32_t)va >> 12) & 0x3ff));
 
 
 }
@@ -31,11 +55,24 @@ mappages(pde_t *pgdir, uint32_t *va, uint32_t size, uint32_t pa,uint32_t perm){
 	last_pg = (uint32_t *)PGROUNDDOWN((uint32_t)va + size -1);
 
 	for(;;){
+		// pte point at the index of the entry in pgtab;
 		if((pte=walkpgdir(pgdir, first_pg, 1)) == 0){
 			return -1;
 		}
-		//TODO
+
+		if(*pte|PTE_P){
+			panic("remap");
+		}
+
+		// make pa align 4-KByte
+		*pte = (pa & ~(0xfff))|perm|PTE_P;
+		if(first_pg == last_pg){
+			break;
+		}
+		first_pg += PGSIZE;
+		pa += PGSIZE;
 	}
+	return 0;
 }
 
 // see more detail in "xv6-public/vm.c"
