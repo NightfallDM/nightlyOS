@@ -28,4 +28,7 @@ int main(void){
 	mpinit(); // in "mp.c"
 	// detect other processors by the "MP Floating Pointer Structure"
 	// see more detail in "Inter MultiProcessor specification 1.4"
+	
+	lapicinit(); // in "lapic.c"
+	// interrupy controller
 }
