@@ -36,5 +36,8 @@ int main(void){
 	// segment descriptors
 	
 	picinit(); // in "picirq.c"
-	// disable pic(We use APIC)
+	// disable pic(We use APIC
+	
+	ioapicinit(); // in "ioapic.c"
+	// init the ioapic
 }
