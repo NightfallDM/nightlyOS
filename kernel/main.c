@@ -31,4 +31,7 @@ int main(void){
 	
 	lapicinit(); // in "lapic.c"
 	// interrupy controller
+	
+	seginit(); // in "vm.c"
+	// segment descriptors
 }

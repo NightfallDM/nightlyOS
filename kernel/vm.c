@@ -5,10 +5,25 @@
 #include "memlayout.h"
 #include "string.h"
 #include "defs.h"
+#include "proc.h" // "cpu" struct
+#include "mmu.h" // "segment"
 
 extern char* data[]; // define the symbol in "kernel.ld"
 pde_t *kpgdir;
 void switchkvm(void);
+
+// Set up CPU's kernel segment descriptors.
+// Run once on entry on each CPU.
+void seginit(void){
+	struct cpu *c;
+	c = &cpus[cpuid()]; // current cpu
+	// All set to 4 Gbyte segment
+	c->gdt[SEG_KCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, 0);
+	c->gdt[SEG_KDATA] = SEG(STA_W, 0, 0xffffffff, 0);
+	c->gdt[SEG_UCODE] = SEG(STA_X|STA_R, 0, 0xffffffff, DPL_USER);
+	c->gdt[SEG_UDATA] = SEG(STA_W, 0, 0xffffffff, DPL_USER);
+	lgdt(c->gdt, sizeof(c->gdt));
+}
 
 static pte_t *
 walkpgdir(pde_t *pgdir, void *va, int32_t alloc){
