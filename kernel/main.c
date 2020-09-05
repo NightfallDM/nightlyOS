@@ -34,4 +34,7 @@ int main(void){
 	
 	seginit(); // in "vm.c"
 	// segment descriptors
+	
+	picinit(); // in "picirq.c"
+	// disable pic(We use APIC)
 }
