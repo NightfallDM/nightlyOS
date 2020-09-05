@@ -40,4 +40,7 @@ int main(void){
 	
 	ioapicinit(); // in "ioapic.c"
 	// init the ioapic
+	
+	consoleinit(); // in "console.c"
+	// console hardware
 }
