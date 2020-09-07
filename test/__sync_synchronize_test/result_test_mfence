@@ -1,0 +1,11 @@
+contain file:
+	test*
+
+
+result:
+	By using the "__sync_synchronize()" that provided by GCC can gen a 
+"memory barrier"(hardware, full barrier).You can see the asm code in the 
+"*.s" files to get more message.Notice the "mfence" instriction.
+
+Notice:
+	get more detail by search "memory barrier" or "__sync_synchronize".
