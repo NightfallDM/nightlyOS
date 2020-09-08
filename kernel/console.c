@@ -19,6 +19,8 @@ static struct {
 	int locking;
 } cons;
 
+
+// TODO (after build "fs", use the concept in "fs", like "inode")
 static int consolewrite(struct inode *ip, char* buf, int n){
 	
 }
