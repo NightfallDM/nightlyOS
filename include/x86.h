@@ -55,4 +55,24 @@ lcr3(uint32_t *addr){
 	};
 }
 
+static inline void
+cli(){
+	asm volatile("cli":::);
+}
+
+static inline void
+sti(){
+	asm volitile("sti":::);
+}
+
+static inline int
+xchg(int *addr, int newval){
+	int ret;
+	asm volatile("lock; xchgl %0, %1"
+		     : "+m" (*addr), "=a" (ret)
+		     : "1" (newval)
+		     : "memory", "cc");
+	return ret;
+}
+
 #endif //end __X86_H_
