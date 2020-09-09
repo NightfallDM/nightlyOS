@@ -43,4 +43,7 @@ int main(void){
 	
 	consoleinit(); // in "console.c"
 	// console hardware
+	
+	pinit(); // in "proc.c"
+	// process table
 }
