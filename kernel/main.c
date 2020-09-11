@@ -46,4 +46,9 @@ int main(void){
 	
 	pinit(); // in "proc.c"
 	// process table
+	
+	userinit(); // in "proc.c"
+	// first user process
+	// Note: just set the first user process,but not to execute.
+	// We will running the process in the "scheduler()"
 }

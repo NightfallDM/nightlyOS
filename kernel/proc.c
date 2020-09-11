@@ -9,3 +9,7 @@ struct {
 void pinit(void){
 	initlock(&ptable.lock, "ptable");
 }
+
+void userinit(void){
+
+}
