@@ -139,3 +139,20 @@ void kvmalloc(void){
 void switchkvm(void){
 	lcr3(V2P(kpgdir));
 }
+
+// Load the initcode into address 0 of pgdir.
+// sz must be less than a page("initcode.S")
+void
+inituvm(pde_t *pgdir, char *init, uint32_t sz){
+	char *mem;
+
+	if(sz >=PGSIZE){
+		panic("inituvm: initcode more than one page");
+	}
+	if((mem=kalloc()) == 0){
+		panic("inituvm: fail to alloc mem for initcode");
+	}
+	memset(mem, 0, PGSIZE);
+	mappages(pgdir, 0, PGSIZE, V2P(mem), PTE_W|PTE_U);
+	memove(mem, init, sz);
+}
