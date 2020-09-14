@@ -44,8 +44,17 @@ int main(void){
 	consoleinit(); // in "console.c"
 	// console hardware
 	
+	uartinit();
+	// serial port
+	
 	pinit(); // in "proc.c"
 	// process table
+	
+	tvinit();
+	// trap vectors
+	
+	binit();
+	// buffer cache
 	
 	userinit(); // in "proc.c"
 	// first user process
