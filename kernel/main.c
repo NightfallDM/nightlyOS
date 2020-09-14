@@ -56,6 +56,12 @@ int main(void){
 	binit();
 	// buffer cache
 	
+	fileinit();
+	// file table
+	
+	ideinit();
+	// disk
+	
 	userinit(); // in "proc.c"
 	// first user process
 	// Note: just set the first user process,but not to execute.
