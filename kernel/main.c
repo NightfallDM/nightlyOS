@@ -62,6 +62,9 @@ int main(void){
 	ideinit();
 	// disk
 	
+	startothers();
+	// start other processors
+	
 	userinit(); // in "proc.c"
 	// first user process
 	// Note: just set the first user process,but not to execute.
