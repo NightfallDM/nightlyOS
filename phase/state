@@ -6,3 +6,4 @@ Arch
 clang
 FFI
 mix_calling
+full_doc
