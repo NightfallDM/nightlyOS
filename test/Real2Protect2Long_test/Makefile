@@ -1,6 +1,6 @@
 boot.img: mode_switch
 	dd if=/dev/zero of=boot.img bs=512 count=1024
-	dd if=test of=boot.img bs=524288 count=1
+	dd if=test of=boot.img bs=1024 count=1
 
 mode_switch: mode_switch.S
 	cpp -I../ mode_switch.S -o mode_switch.s
@@ -14,7 +14,7 @@ mode_switch: mode_switch.S
 	#objcopy -O binary mode_switch.elf mode_switch
 
 qemu:
-	qemu-system-x86_64 -s -S -hda boot.img $
+	qemu-system-x86_64 -s -S -hda boot.img &
 	sleep 1
 	cgdb -x gdbinit
 
