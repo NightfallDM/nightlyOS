@@ -12,5 +12,13 @@
 #define USER_C		0xbfa
 #define USER_D		0xbf3
 
+// separate
+
+#define PML4E(PA) \
+	.quad (((PA) << 12) | 0x27)
+
+#define PDPTE(PA) \
+	.quad (((PA) << 30) | 0xa7)
+
 
 #endif // NT_SETUP_H

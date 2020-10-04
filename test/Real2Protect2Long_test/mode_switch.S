@@ -35,10 +35,16 @@ switch_protected:
 .p2align 2
 set_GDT_entries:
 	.quad 0
-	GDTE(0, 0xfffff, KERNEL_C)
-	GDTE(0, 0xfffff, KERNEL_D)
-	GDTE(0, 0xfffff, USER_C)
-	GDTE(0, 0xfffff, USER_D)
+	#GDTE(0, 0xfffff, KERNEL_C)
+	#GDTE(0, 0xfffff, KERNEL_D)
+	#GDTE(0, 0xfffff, USER_C)
+	#GDTE(0, 0xfffff, USER_D)
+	.long 0xff
+	.byte 0x0
+	.byte 0x9b
+	.byte 0xcf
+	.byte 0x0
+	
 end_GDT:
 	.word (end_GDT - set_GDT_entries - 1) # limit of all GDTE
 	.long set_GDT_entries # GDT BASE address
