@@ -20,7 +20,7 @@
 set_long_mode:
 	# enable "PAE"
 	movl %cr4, %eax
-	xorl $0x20, %eax
+	orl $0x20, %eax
 	movl %eax, %cr4
 
 load_cr3:
@@ -34,12 +34,12 @@ set_pv_page_map:
 	# PTE(0x0)
 	movl $0xc0000080, %ecx
 	rdmsr
-	xor $0x100, %eax
+	orl $0x100, %eax
 	wrmsr
 # enable paging to get into the long mode, compatibility mode.
 enable_paging:
 	movl %cr0, %eax
-	xorl $(1<<31), %eax
+	orl $(1<<31), %eax
 	movl %eax, %cr0
 
 	lgdt LGDT64

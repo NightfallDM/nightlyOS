@@ -12,5 +12,5 @@ real_long_mode:
 	movq $0x1f201f201f201f20, %rax
 	movl $500, %ecx
 	rep stosq
-	hlt
+#	hlt
 	

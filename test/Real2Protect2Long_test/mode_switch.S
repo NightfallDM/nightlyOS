@@ -16,7 +16,6 @@
 # 4. Setup CR0 to enable the PE
 # 5. Far JMP or CALL instruction after the MOV CR0 to refresh the segment reg
 start:
-#	cli
 	xorw %ax, %ax
 	movw %ax, %es
 	movw %ax, %ds
@@ -24,11 +23,22 @@ start:
 
 enable_A20:
 	inb $0x92, %al
-	xorb $0x2, %al
+	orb $0x2, %al
 	outb %al, $0x92
+
+load_4_sectors:
+	movw $0x7e00, %bx
+	movw $0x204, %ax
+	movw $0x1, %cx
+	movw $0x80, %dx
+	cli
+	
 
 switch_protected:
 	lgdt end_GDT
+	movl %cr0, %eax
+	orl $0x1, %eax
+	movl %eax, %cr0
 	ljmp $(1<<3), $set_long_mode
 
 // set GDT
@@ -53,4 +63,4 @@ end_GDT:
 
 .org 510
 end:
-	.word 0xaa55	
+	.word 0xaa55
