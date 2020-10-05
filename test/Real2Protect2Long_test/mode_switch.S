@@ -31,6 +31,7 @@ load_4_sectors:
 	movw $0x204, %ax
 	movw $0x1, %cx
 	movw $0x80, %dx
+	int $0x13
 	cli
 	
 
