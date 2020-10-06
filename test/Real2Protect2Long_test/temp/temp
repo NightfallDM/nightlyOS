@@ -32,13 +32,13 @@ Disassembly of section .text:
 0000000000007c25 <switch2>:
     7c25:	b8 00 00 10 00       	mov    $0x100000,%eax
     7c2a:	0f 22 d8             	mov    %rax,%cr3
-    7c2d:	c6 05 00 00 01 00 23 	movb   $0x23,0x10000(%rip)        # 17c34 <__bss_start+0xfc34>
-    7c34:	66 c7 05 01 00 01 00 	movw   $0x110,0x10001(%rip)        # 17c3e <__bss_start+0xfc3e>
-    7c3b:	10 01 
-    7c3d:	66 c7 05 00 10 01 00 	movw   $0xc3,0x11000(%rip)        # 18c46 <__bss_start+0x10c46>
+    7c2d:	c6 05 00 00 10 00 23 	movb   $0x23,0x100000(%rip)        # 107c34 <__bss_start+0xffc34>
+    7c34:	66 c7 05 01 00 10 00 	movw   $0x1010,0x100001(%rip)        # 107c3e <__bss_start+0xffc3e>
+    7c3b:	10 10 
+    7c3d:	66 c7 05 00 10 10 00 	movw   $0xc3,0x101000(%rip)        # 108c46 <__bss_start+0x100c46>
     7c44:	c3 00 
-    7c46:	c7 05 03 10 01 00 00 	movl   $0xa000000,0x11003(%rip)        # 18c53 <__bss_start+0x10c53>
-    7c4d:	00 00 0a 
+    7c46:	c7 05 03 10 10 00 00 	movl   $0x0,0x101003(%rip)        # 108c53 <__bss_start+0x100c53>
+    7c4d:	00 00 00 
     7c50:	0f 20 e0             	mov    %cr4,%rax
     7c53:	83 c8 20             	or     $0x20,%eax
     7c56:	0f 22 e0             	mov    %rax,%cr4
@@ -181,7 +181,7 @@ Disassembly of section .debug_line:
   48:	a0 3d 3d 3e 59 2f 59 	movabs 0x3d30592f593e3d3d,%al
   4f:	30 3d 
   51:	59                   	pop    %rcx
-  52:	41 75 77             	rex.B jne cc <main-0x7b34>
+  52:	41 75 79             	rex.B jne ce <main-0x7b32>
   55:	02 80 03 00 01 01    	add    0x1010003(%rax),%al
 
 Disassembly of section .debug_str:

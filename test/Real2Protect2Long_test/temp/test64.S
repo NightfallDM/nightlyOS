@@ -34,10 +34,10 @@ switch2:
 	movl $(1<<20), %eax
 	movl %eax, %cr3
 
-	movb $0x23, (0x10000)
-	movw $0x110, (0x10001)
-	movw $0xc3, (0x11000)
-	movl $0xa000000, (0x11003)
+	movb $0x23, (0x100000)
+	movw $0x1010, (0x100001)
+	movw $0xc3, (0x101000)
+	movl $0x0, (0x101003)
 	
 	movl %cr4, %eax
 	orl $(1<<5), %eax
@@ -59,6 +59,8 @@ enter_64:
 	ljmp $(1<<3), $mode_64
 .code64
 mode_64:
+	#movq $(0x40000000 - 1 -1), %rax
+	#movq %rax, %rsp # 1G stack
 	jmp mode_64
 
 .p2align 2
