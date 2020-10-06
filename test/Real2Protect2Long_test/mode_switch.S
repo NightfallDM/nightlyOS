@@ -21,6 +21,12 @@ start:
 	movw %ax, %ds
 	movw %ax, %ss
 
+clear_screen:
+	movw $0x600, %ax
+	xorw %cx, %cx
+	int $0x10
+	
+
 enable_A20:
 	inb $0x92, %al
 	orb $0x2, %al
@@ -40,7 +46,11 @@ switch_protected:
 	movl %cr0, %eax
 	orl $0x1, %eax
 	movl %eax, %cr0
-	ljmp $(1<<3), $set_long_mode
+	ljmp $(1<<3), $print
+
+.code32
+print:
+	jmp print
 
 // set GDT
 .p2align 2
