@@ -88,7 +88,7 @@ mm88:
 
 set_A20:
 	inb $0x92, %al
-	xorb $0x2, %al
+	orb $0x2, %al
 	outb %al, $0x92
 
 
@@ -98,7 +98,7 @@ switch_protect:
 //Note: do not use "$" before "gdtr_value" so it can load it's value 
 	cli
 	movl %cr0, %eax
-	xorl $0x1, %eax
+	orl $0x1, %eax
 	movl %eax, %cr0
 
 //in the doc of intel,suggest a long jump follow the mode switch
