@@ -59,9 +59,18 @@ enter_64:
 	ljmp $(1<<3), $mode_64
 .code64
 mode_64:
-	#movq $(0x40000000 - 1 -1), %rax
-	#movq %rax, %rsp # 1G stack
-	jmp mode_64
+	movw $(0x1<<3), %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	movw $(0x2<<3), %ax # can't set ss point the code page
+	movw %ax, %ss 
+	movq $0x1000000, %rax
+	movq %rax, %rsp
+	jmp 0x7e00
+spin64:
+	jmp spin64
 
 .p2align 2
 gdt32:

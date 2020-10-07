@@ -18,9 +18,8 @@ Disassembly of section .text:
 
 0000000000007c0f <switch1>:
     7c0f:	0f 01 16             	lgdt   (%rsi)
-    7c12:	94                   	xchg   %eax,%esp
-    7c13:	7c 0f                	jl     7c24 <spin+0x1>
-    7c15:	20 c0                	and    %al,%al
+    7c12:	b4 7c                	mov    $0x7c,%ah
+    7c14:	0f 20 c0             	mov    %cr0,%rax
     7c17:	66 83 c8 01          	or     $0x1,%ax
     7c1b:	0f 22 c0             	mov    %rax,%cr0
     7c1e:	ea                   	(bad)  
@@ -51,37 +50,49 @@ Disassembly of section .text:
     7c6f:	0f 22 c0             	mov    %rax,%cr0
 
 0000000000007c72 <enter_64>:
-    7c72:	0f 01 15 b4 7c 00 00 	lgdt   0x7cb4(%rip)        # f92d <__bss_start+0x792d>
+    7c72:	0f 01 15 d4 7c 00 00 	lgdt   0x7cd4(%rip)        # f94d <__bss_start+0x794d>
     7c79:	ea                   	(bad)  
     7c7a:	80 7c 00 00 08       	cmpb   $0x8,0x0(%rax,%rax,1)
 	...
 
 0000000000007c80 <mode_64>:
-    7c80:	eb fe                	jmp    7c80 <mode_64>
-    7c82:	66 90                	xchg   %ax,%ax
+    7c80:	66 b8 08 00          	mov    $0x8,%ax
+    7c84:	8e d8                	mov    %eax,%ds
+    7c86:	8e c0                	mov    %eax,%es
+    7c88:	8e e0                	mov    %eax,%fs
+    7c8a:	8e e8                	mov    %eax,%gs
+    7c8c:	66 b8 10 00          	mov    $0x10,%ax
+    7c90:	8e d0                	mov    %eax,%ss
+    7c92:	48 c7 c0 00 00 00 01 	mov    $0x1000000,%rax
+    7c99:	48 89 c4             	mov    %rax,%rsp
+    7c9c:	e9 5f 01 00 00       	jmpq   7e00 <END+0x2>
 
-0000000000007c84 <gdt32>:
+0000000000007ca1 <spin64>:
+    7ca1:	eb fe                	jmp    7ca1 <spin64>
+    7ca3:	90                   	nop
+
+0000000000007ca4 <gdt32>:
 	...
-    7c8c:	ff                   	(bad)  
-    7c8d:	ff 00                	incl   (%rax)
-    7c8f:	00 00                	add    %al,(%rax)
-    7c91:	9b                   	fwait
-    7c92:	cf                   	iret   
+    7cac:	ff                   	(bad)  
+    7cad:	ff 00                	incl   (%rax)
+    7caf:	00 00                	add    %al,(%rax)
+    7cb1:	9b                   	fwait
+    7cb2:	cf                   	iret   
 	...
 
-0000000000007c94 <GDTR_V>:
-    7c94:	0f 00 84 7c 00 00 66 	sldt   -0x6f9a0000(%rsp,%rdi,2)
-    7c9b:	90 
+0000000000007cb4 <GDTR_V>:
+    7cb4:	0f 00 a4 7c 00 00 66 	verr   -0x6f9a0000(%rsp,%rdi,2)
+    7cbb:	90 
 
-0000000000007c9c <gdt64>:
+0000000000007cbc <gdt64>:
 	...
-    7ca8:	00 9b af 00 00 00    	add    %bl,0xaf(%rbx)
-    7cae:	00 00                	add    %al,(%rax)
-    7cb0:	00 93 00 00      	add    %dl,0x170000(%rbx)
+    7cc8:	00 9b af 00 00 00    	add    %bl,0xaf(%rbx)
+    7cce:	00 00                	add    %al,(%rax)
+    7cd0:	00 93 00 00      	add    %dl,0x170000(%rbx)
 
-0000000000007cb4 <GDTR_64V>:
-    7cb4:	17                   	(bad)  
-    7cb5:	00 9c 7c 00 00 00 00 	add    %bl,0x0(%rsp,%rdi,2)
+0000000000007cd4 <GDTR_64V>:
+    7cd4:	17                   	(bad)  
+    7cd5:	00 bc 7c 00 00 00 00 	add    %bh,0x0(%rsp,%rdi,2)
 	...
 
 0000000000007dfe <END>:
@@ -144,7 +155,7 @@ Disassembly of section .debug_abbrev:
 Disassembly of section .debug_line:
 
 0000000000000000 <.debug_line>:
-   0:	57                   	push   %rdi
+   0:	61                   	(bad)  
    1:	00 00                	add    %al,(%rax)
    3:	00 03                	add    %al,(%rbx)
    5:	00 1f                	add    %bl,(%rdi)
@@ -181,8 +192,17 @@ Disassembly of section .debug_line:
   48:	a0 3d 3d 3e 59 2f 59 	movabs 0x3d30592f593e3d3d,%al
   4f:	30 3d 
   51:	59                   	pop    %rcx
-  52:	41 75 79             	rex.B jne ce <main-0x7b32>
-  55:	02 80 03 00 01 01    	add    0x1010003(%rax),%al
+  52:	41 75 77             	rex.B jne cc <main-0x7b34>
+  55:	4b 2f                	rex.WXB (bad) 
+  57:	2f                   	(bad)  
+  58:	2f                   	(bad)  
+  59:	2f                   	(bad)  
+  5a:	4b 2f                	rex.WXB (bad) 
+  5c:	75 3d                	jne    9b <main-0x7b65>
+  5e:	5a                   	pop    %rdx
+  5f:	02 df                	add    %bh,%bl
+  61:	02 00                	add    (%rax),%al
+  63:	01 01                	add    %eax,(%rcx)
 
 Disassembly of section .debug_str:
 
