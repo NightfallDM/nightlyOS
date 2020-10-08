@@ -27,7 +27,7 @@ outb(uint16_t port, uint8_t data){
 }
 
 
-static inline void
+static inline uint8_t
 inb(uint16_t port){
 	uint8_t data;
 	asm volatile ("inb %1, %0": "=a" (data) : "d" (port));
@@ -47,12 +47,12 @@ insl(uint32_t port, uint32_t dest_addr, uint32_t cnt){
 
 static inline void
 lcr3(uint32_t *addr){
-	asm volatile {
+	asm volatile (
 			"movl %0, %%cr3"
 			: 
 			: "r" (addr)
 			:
-	};
+		     );
 }
 
 static inline void
@@ -62,7 +62,7 @@ cli(){
 
 static inline void
 sti(){
-	asm volitile("sti":::);
+	asm volatile("sti":::);
 }
 
 static inline int

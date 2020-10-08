@@ -11,18 +11,19 @@
  *Then follow the header to load the whole kernel :-)
  * */
 
-#include "elf.h"
-#include "x86.h"
-#include "types.h"
+#include "../include/elf.h"
+#include "../include/x86.h"
+#include "../include/types.h"
+void loadmain(void);
 
-static void read_load(uint32_t dest_addr, uint32_t count, uint32_t k_off);
+static void read_load(uint32_t *dest_addr, uint32_t count, uint32_t k_off);
 
-static void _read_one_sector(uint32_t dest_addr, uint32_t k_off);
+static void _read_one_sector(uint32_t *dest_addr, uint32_t k_off);
 
 static void _waitdisk(void);
 
 void loadmain(void){
-	struct elfhdr *elfh //elf header
+	struct elfhdr *elf; //elf header
 	struct proghdr *ph, *eph;
 	void (*entry)(void); // func point
 	uint8_t *pa; //physical address
@@ -62,7 +63,7 @@ void loadmain(void){
 // read count Byte data from the kernel->k_off,then put them at dest_addr
 static void read_load(uint32_t *dest_addr, uint32_t count, uint32_t k_off){
 	int start = 0;
-	for (i=0;i<(int)(count/512)+1;i++){
+	for (int i=0;i<(int)(count/512)+1;i++){
 		_read_one_sector(dest_addr+512*i, k_off+512*i);
 	}
 }
@@ -89,7 +90,7 @@ static void _read_one_sector(uint32_t *dest_addr, uint32_t k_off){
 
 	//Read data.
 	_waitdisk();
-	insl(0x1F0, desc_addr, 512);
+	insl(0x1F0, dest_addr, 512);
 
 }
 
