@@ -9,3 +9,4 @@ mix_calling
 full_doc
 grub2
 meson
+hw/i386
