@@ -1,16 +1,18 @@
 # "setup" part
 
 .code16
-.global _start
-_start:
-	.byte 0xeb # "jmp" ins
-	.byte setup_start
+.section ".header", "a"
 .global hdr
 hdr:
 kernel_size:	.long 0 # filled in build system (every byte)
 code32_start:	.long 0x100000
 
+.global _start
+_start:
+	.byte 0xeb # "jmp" ins
+	.byte setup_start
 
+.section "entrytext", "ax"
 setup_start:
 	movw %cs, %ax
 	movw %ax, %ds
