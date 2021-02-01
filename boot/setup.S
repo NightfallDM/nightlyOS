@@ -1,7 +1,3 @@
-//date: 2929/08/19
-//author: night
-//email: 1335715927@qq.com
-
 /*
 because is in the test and try to do phase,so i may change the code and the 
 place where hold the data :-)

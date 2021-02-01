@@ -2,8 +2,8 @@ objs := boot.o boot.elf boot.bin setup.o setup.elf setup.bin boot.img
 
 boot.img : $(objs)
 	dd if=/dev/zero of=boot.img bs=512 count=5
-	dd if=boot.bin of=boot.img bs=512 count=1
-	dd if=setup.bin of=boot.img seek=1 bs=512 count=4
+	dd if=boot.bin of=boot.img bs=512 count=1 conv=notrunc
+	dd if=setup.bin of=boot.img seek=1 bs=512 count=4 conv=notrunc
 
 
 boot.o : boot.S
