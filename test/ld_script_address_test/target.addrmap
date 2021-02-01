@@ -1,0 +1,178 @@
+
+a.out:     file format elf64-x86-64
+
+
+Disassembly of section .note.gnu.build-id:
+
+0000000000400190 <.note.gnu.build-id>:
+  400190:	04 00                	add    $0x0,%al
+  400192:	00 00                	add    %al,(%rax)
+  400194:	14 00                	adc    $0x0,%al
+  400196:	00 00                	add    %al,(%rax)
+  400198:	03 00                	add    (%rax),%eax
+  40019a:	00 00                	add    %al,(%rax)
+  40019c:	47                   	rex.RXB
+  40019d:	4e 55                	rex.WRX push %rbp
+  40019f:	00 00                	add    %al,(%rax)
+  4001a1:	8e be 2b fd b9 24    	mov    0x24b9fd2b(%rsi),%?
+  4001a7:	d6                   	(bad)  
+  4001a8:	f9                   	stc    
+  4001a9:	c7                   	(bad)  
+  4001aa:	f3 d9 34 99          	repz fnstenv (%rcx,%rbx,4)
+  4001ae:	2d 33 fc d3 19       	sub    $0x19d3fc33,%eax
+  4001b3:	47                   	rex.RXB
+
+Disassembly of section .text:
+
+0000000000401000 <hello>:
+  401000:	55                   	push   %rbp
+  401001:	48 89 e5             	mov    %rsp,%rbp
+  401004:	90                   	nop
+  401005:	5d                   	pop    %rbp
+  401006:	c3                   	retq   
+
+0000000000401007 <sum>:
+  401007:	55                   	push   %rbp
+  401008:	48 89 e5             	mov    %rsp,%rbp
+  40100b:	48 89 7d e8          	mov    %rdi,-0x18(%rbp)
+  40100f:	89 75 e4             	mov    %esi,-0x1c(%rbp)
+  401012:	c7 45 fc 00 00 00 00 	movl   $0x0,-0x4(%rbp)
+  401019:	c7 45 f8 00 00 00 00 	movl   $0x0,-0x8(%rbp)
+  401020:	eb 1d                	jmp    40103f <sum+0x38>
+  401022:	8b 45 f8             	mov    -0x8(%rbp),%eax
+  401025:	48 98                	cltq   
+  401027:	48 8d 14 85 00 00 00 	lea    0x0(,%rax,4),%rdx
+  40102e:	00 
+  40102f:	48 8b 45 e8          	mov    -0x18(%rbp),%rax
+  401033:	48 01 d0             	add    %rdx,%rax
+  401036:	8b 00                	mov    (%rax),%eax
+  401038:	01 45 fc             	add    %eax,-0x4(%rbp)
+  40103b:	83 45 f8 01          	addl   $0x1,-0x8(%rbp)
+  40103f:	8b 45 f8             	mov    -0x8(%rbp),%eax
+  401042:	3b 45 e4             	cmp    -0x1c(%rbp),%eax
+  401045:	7c db                	jl     401022 <sum+0x1b>
+  401047:	8b 45 fc             	mov    -0x4(%rbp),%eax
+  40104a:	5d                   	pop    %rbp
+  40104b:	c3                   	retq   
+
+000000000040104c <main>:
+  40104c:	55                   	push   %rbp
+  40104d:	48 89 e5             	mov    %rsp,%rbp
+  401050:	48 83 ec 50          	sub    $0x50,%rsp
+  401054:	c7 45 b0 01 00 00 00 	movl   $0x1,-0x50(%rbp)
+  40105b:	c7 45 b4 02 00 00 00 	movl   $0x2,-0x4c(%rbp)
+  401062:	c7 45 b8 03 00 00 00 	movl   $0x3,-0x48(%rbp)
+  401069:	c7 45 bc 04 00 00 00 	movl   $0x4,-0x44(%rbp)
+  401070:	c7 45 c0 05 00 00 00 	movl   $0x5,-0x40(%rbp)
+  401077:	48 8d 45 b0          	lea    -0x50(%rbp),%rax
+  40107b:	be 05 00 00 00       	mov    $0x5,%esi
+  401080:	48 89 c7             	mov    %rax,%rdi
+  401083:	e8 7f ff ff ff       	callq  401007 <sum>
+  401088:	89 45 fc             	mov    %eax,-0x4(%rbp)
+  40108b:	b8 00 00 00 00       	mov    $0x0,%eax
+  401090:	c9                   	leaveq 
+  401091:	c3                   	retq   
+
+Disassembly of section .eh_frame_hdr:
+
+0000000000402000 <__GNU_EH_FRAME_HDR>:
+  402000:	01 1b                	add    %ebx,(%rbx)
+  402002:	03 3b                	add    (%rbx),%edi
+  402004:	24 00                	and    $0x0,%al
+  402006:	00 00                	add    %al,(%rax)
+  402008:	03 00                	add    (%rax),%eax
+  40200a:	00 00                	add    %al,(%rax)
+  40200c:	00 f0                	add    %dh,%al
+  40200e:	ff                   	(bad)  
+  40200f:	ff 40 00             	incl   0x0(%rax)
+  402012:	00 00                	add    %al,(%rax)
+  402014:	07                   	(bad)  
+  402015:	f0 ff                	lock (bad) 
+  402017:	ff 60 00             	jmpq   *0x0(%rax)
+  40201a:	00 00                	add    %al,(%rax)
+  40201c:	4c                   	rex.WR
+  40201d:	f0 ff                	lock (bad) 
+  40201f:	ff                   	.byte 0xff
+  402020:	80 00 00             	addb   $0x0,(%rax)
+	...
+
+Disassembly of section .eh_frame:
+
+0000000000402028 <__bss_start-0x1fd8>:
+  402028:	14 00                	adc    $0x0,%al
+  40202a:	00 00                	add    %al,(%rax)
+  40202c:	00 00                	add    %al,(%rax)
+  40202e:	00 00                	add    %al,(%rax)
+  402030:	01 7a 52             	add    %edi,0x52(%rdx)
+  402033:	00 01                	add    %al,(%rcx)
+  402035:	78 10                	js     402047 <__GNU_EH_FRAME_HDR+0x47>
+  402037:	01 1b                	add    %ebx,(%rbx)
+  402039:	0c 07                	or     $0x7,%al
+  40203b:	08 90 01 00 00 1c    	or     %dl,0x1c000001(%rax)
+  402041:	00 00                	add    %al,(%rax)
+  402043:	00 1c 00             	add    %bl,(%rax,%rax,1)
+  402046:	00 00                	add    %al,(%rax)
+  402048:	b8 ef ff ff 07       	mov    $0x7ffffef,%eax
+  40204d:	00 00                	add    %al,(%rax)
+  40204f:	00 00                	add    %al,(%rax)
+  402051:	41 0e                	rex.B (bad) 
+  402053:	10 86 02 43 0d 06    	adc    %al,0x60d4302(%rsi)
+  402059:	42 0c 07             	rex.X or $0x7,%al
+  40205c:	08 00                	or     %al,(%rax)
+  40205e:	00 00                	add    %al,(%rax)
+  402060:	1c 00                	sbb    $0x0,%al
+  402062:	00 00                	add    %al,(%rax)
+  402064:	3c 00                	cmp    $0x0,%al
+  402066:	00 00                	add    %al,(%rax)
+  402068:	9f                   	lahf   
+  402069:	ef                   	out    %eax,(%dx)
+  40206a:	ff                   	(bad)  
+  40206b:	ff 45 00             	incl   0x0(%rbp)
+  40206e:	00 00                	add    %al,(%rax)
+  402070:	00 41 0e             	add    %al,0xe(%rcx)
+  402073:	10 86 02 43 0d 06    	adc    %al,0x60d4302(%rsi)
+  402079:	02 40 0c             	add    0xc(%rax),%al
+  40207c:	07                   	(bad)  
+  40207d:	08 00                	or     %al,(%rax)
+  40207f:	00 1c 00             	add    %bl,(%rax,%rax,1)
+  402082:	00 00                	add    %al,(%rax)
+  402084:	5c                   	pop    %rsp
+  402085:	00 00                	add    %al,(%rax)
+  402087:	00 c4                	add    %al,%ah
+  402089:	ef                   	out    %eax,(%dx)
+  40208a:	ff                   	(bad)  
+  40208b:	ff 46 00             	incl   0x0(%rsi)
+  40208e:	00 00                	add    %al,(%rax)
+  402090:	00 41 0e             	add    %al,0xe(%rcx)
+  402093:	10 86 02 43 0d 06    	adc    %al,0x60d4302(%rsi)
+  402099:	02 41 0c             	add    0xc(%rcx),%al
+  40209c:	07                   	(bad)  
+  40209d:	08 00                	or     %al,(%rax)
+	...
+
+Disassembly of section .comment:
+
+0000000000000000 <.comment>:
+   0:	47                   	rex.RXB
+   1:	43                   	rex.XB
+   2:	43 3a 20             	rex.XB cmp (%r8),%spl
+   5:	28 47 4e             	sub    %al,0x4e(%rdi)
+   8:	55                   	push   %rbp
+   9:	29 20                	sub    %esp,(%rax)
+   b:	31 30                	xor    %esi,(%rax)
+   d:	2e 32 2e             	xor    %cs:(%rsi),%ch
+  10:	31 20                	xor    %esp,(%rax)
+  12:	32 30                	xor    (%rax),%dh
+  14:	32 30                	xor    (%rax),%dh
+  16:	30 37                	xor    %dh,(%rdi)
+  18:	32 33                	xor    (%rbx),%dh
+  1a:	20 28                	and    %ch,(%rax)
+  1c:	52                   	push   %rdx
+  1d:	65 64 20 48 61       	gs and %cl,%fs:0x61(%rax)
+  22:	74 20                	je     44 <hello-0x400fbc>
+  24:	31 30                	xor    %esi,(%rax)
+  26:	2e 32 2e             	xor    %cs:(%rsi),%ch
+  29:	31                   	.byte 0x31
+  2a:	2d                   	.byte 0x2d
+  2b:	31 29                	xor    %ebp,(%rcx)
+	...
