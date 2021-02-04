@@ -7,9 +7,8 @@ struct heap_hdr{
 	u16 rest_size;
 }__attribute__((packed))
 
-/* the 4 byte before heap require free to put hdr*/
-struct heap_hdr* init_heap(u16 start_addr, u16 size){
-	struct heap_hdr* hp_hdr = (struct heap_hdr)start_addr;
+
+struct heap_hdr* init_heap(struct heap_hdr hp_hdr, u16 start_addr, u16 size){
 	hp_hdr->next_addr = start_addr;
 	hp_hdr->rest_size = size;
 	return hp_hdr;
