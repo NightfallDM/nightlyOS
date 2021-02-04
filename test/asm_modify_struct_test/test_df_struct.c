@@ -8,9 +8,12 @@ typedef struct Test{
 	unsigned int num3;
 }test;
 test* ptest1;
+test test1;
 
 void main(){
-	test test1 = {111, 222, 333};
+	test1.num1 = 111;
+	test1.num2 = 222;
+	test1.num3 = 333;
 	ptest1 = &test1;
 	change();
 	printf("num1 = %d\nnum2 = %d\nnum3 = %d\n", test1.num1, test1.num2, test1.num3);
