@@ -2,8 +2,11 @@
 change:
 	pushq %rbx
 	xorq %rbx, %rbx
-	addw $111, (test1)
-	#addw $111, test1(%rbx)
+
+	# modify test1.num2
+	addw $111, (test1+4)
+	#addw $111, test1+4(%rbx)
+
 	popq %rbx
 	ret
 .type change, @function
