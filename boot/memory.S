@@ -11,7 +11,8 @@ detect_memory:
 	int $0x15
 next:
 	jc RT
-	addb $1, 
+	# __boot_parm defined in "main.c"
+	addb $1, (__boot_param)
 	movl $0x534d4150, %edx
 	testl %ebx, %ebx
 	je RT

@@ -12,6 +12,6 @@ struct e820_entry{
 struct boot_params{
 	u8 e820_entries;
 	struct e820_entry* e820_table;
-}
+}__attribute__((packed));
 
 #endif // end of "_NTDM_BOOTPARAM_H"
