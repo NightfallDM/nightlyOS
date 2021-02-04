@@ -1,6 +1,8 @@
 target: test_df_struct.c libchange.a
-	gcc -L. -lchange -ldl test_df_struct.c -o target
-	#gcc test_df_struct.c modify.o -o target
+	
+	# can not change the "order",otherwise can't find "change" ref......
+	#gcc -L. -lchange -ldl test_df_struct.c -o target
+	gcc test_df_struct.c -L. -lchange -ldl -o target
 
 
 libchange.a: modify.S
