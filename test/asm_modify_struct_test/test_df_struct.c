@@ -7,10 +7,11 @@ typedef struct Test{
 	int num2;
 	unsigned int num3;
 }test;
+test* ptest1;
 
 void main(){
 	test test1 = {111, 222, 333};
-	test* ptest1 = &test1;
+	ptest1 = &test1;
 	change();
 	printf("num1 = %d\nnum2 = %d\nnum3 = %d\n", test1.num1, test1.num2, test1.num3);
 	printf("test1 cost %dbytes\n", sizeof(test));
