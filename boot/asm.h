@@ -1,5 +1,4 @@
 //author: night
-//email: <1335715927@qq.com>
 //date: 2020/08/25
 
 /*
@@ -18,7 +17,7 @@
 //we set the "G" flag, so the every seg max size is "4G"
 #define SEG_ASM(type,base,lim)				\
 	.word (((lim)>>12)&0xffff), ((base)&0xffff);	\
-	.byte (((base)>>16)&0xff), ((type)|0x90),	\
+	.byte (((base)>>16)&0xff), ((type)|0x91),	\
 	      ((((lim)>>28)&0xf)|0xc0), (((base)>>24)&0xff)		
 
 //Note: 0xc0 mean we set the "G" flag and the "D/B" flag,
