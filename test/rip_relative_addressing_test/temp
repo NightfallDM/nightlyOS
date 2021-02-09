@@ -1,0 +1,15 @@
+
+a.out:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 <_start>:
+   0:	48 8d 05 e1 03 00 00 	lea    0x3e1(%rip),%rax        # 3e8 <symbol>
+	...
+
+00000000000003e8 <symbol>:
+ 3e8:	d0 07                	rolb   (%rdi)
+ 3ea:	00 00                	add    %al,(%rax)
+ 3ec:	00 00                	add    %al,(%rax)
+	...
