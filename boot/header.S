@@ -4,7 +4,9 @@
 .section ".header", "a"
 .global hdr
 hdr:
+setup_sectors:	.byte 0 # filled in "build.c"
 kernel_size:	.long 0 # filled in build system (every byte)
+kernel_sectors: .byte 0 # filled in "build.c"
 code32_start:	.long 0x100000
 
 .global _start
