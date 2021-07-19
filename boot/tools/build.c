@@ -15,7 +15,7 @@
 
 unsigned char buf[SETUP_SECT_MAX*512];
 
-static void dir(const char *str, ...){
+static void die(const char *str, ...){
 	va_list args;
 	va_start(args, str);
 	vfprintf(stderr, str, args);
@@ -35,15 +35,15 @@ int main(int argc, char **argv){
 	int fd;
 	
 	if(argc != 4)
-		dir("wrong way to use build.c");
+		die("wrong way to use build.c");
 	
 	file = fopen(argv[1], "r");
 	if (!file)
-		dir("Unable to open '%s'", argv[1]);
+		die("Unable to open '%s'", argv[1]);
 
 	dest = fopen(argv[3], "w");
 	if(!dest)
-		dir("Unable to open '%s'", argv[3]);
+		die("Unable to open '%s'", argv[3]);
 	c = fread(buf, 1, sizeof(buf), file);
 	fclose(file);
 	setup_sectors = c / 512 + (c%512)? 1: 0;
@@ -53,12 +53,14 @@ int main(int argc, char **argv){
 	if(fd<0)
 		die("Unable to open '%s'", argv[2]);
 	if (fstat(fd, &sb))
-		dir("Unable to stat '%s'", argv[2]);
+		die("Unable to stat '%s'", argv[2]);
 	kernel_size = sb.st_size;
 	kernel_sectors = kernel_size / 512 + (kernel_size%512)? 1: 0;
 	padding = kernel_sectors * 512 - kernel_size;
+	put_unaligned_le32(kernel_size, &buf[0x1]);
+	buf[0x5] = kernel_sectors;
 	if (fwrite(buf, 1, setup_sectors*512, dest) != setup_sectors*512)
-		dir("Writing setup failed");
+		die("Writing setup failed");
 	/* file = fopen(argv[2], "r");
 	if (!file)
 		die("Unable to open '%s'", argv[2]);
