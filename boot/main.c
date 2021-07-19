@@ -3,7 +3,7 @@
 #include"types.h"
 #include"mem_op.h"
 /* use in asm */
-struct boot_param __boot_param;
+struct boot_param __boot_param __attribute__((aligned(16)));
 
 struct heap_hdr __hp_hdr;
 
@@ -14,6 +14,10 @@ void copy_setup_header(void){
 	u16 heap_addr = get_heap(&__hp_hdr, sizeof(struct setup_header));
 	memcpy(heap_addr, &hdr, sizeof(hdr));
 	__boot_param.setup_hdr = (struct setup_header *)heap_addr;
+}
+
+void init_heap(void){
+	
 }
 
 void main(){

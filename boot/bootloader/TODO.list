@@ -1,0 +1,1 @@
+write "cmd_line_ptr" at kernel header.
