@@ -29,8 +29,8 @@ OBJDUMP = objdump
 CFLAGS = -fno-pic -static -fno-builtin -fno-omit-frame-pointer
 CFLAGS += -fno-stack-protector -I../ -g -nostdinc
 
-target = setup.elf setup.bin vmnight.bin vmnight.img
-setup-obj-y = header.S 
+target := setup.elf setup.bin vmnight.bin vmnight.img
+setup-obj-y := header.S 
 build = tools/build
 
 setup.elf: $(setup-obj-y)
