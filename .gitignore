@@ -1,0 +1,4 @@
+temp_*
+/.vscode/
+*.o
+/boot/test/
