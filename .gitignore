@@ -1,4 +1,4 @@
 temp_*
-/.vscode/
+.vscode/
 *.o
 /boot/test/
