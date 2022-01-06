@@ -3,6 +3,9 @@
 .code16
 .section ".header", "a"
 .global hdr
+# make the hdr at the end of first 512 byte region
+# to see detail in 'setup.ld'
+
 hdr:
 setup_sectors:	.byte 0 # filled in "build.c"
 kernel_size:	.long 0 # filled in build system (every byte)

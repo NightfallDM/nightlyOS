@@ -1,40 +1,41 @@
-//date: 2020/08/18
-//author: night
-//email: 1335715927@qq.com
-
 //we are now in the real mode so :-)
 .code16
-.global begbss, begtext, begdata, start_boot
+.global begbss, begtext, begdata, start_boot, start, start_boot
 
 //set the useful msg
 START_SEG = 0x07c0
 LOAD_SEG = 0x1000
 
-
-.text
 start_boot:
-	movw $START_SEG, %ax
-	movw %ax, %es
-	movw %ax, %ds
-	jmp start
-	msg:
-		.ascii "Hello Night!!!\n"
-	// test print string by using the bios call
-	
+	ljmp $START_SEG, $start
 	//set the location of cursor
+
 start:
+	movw %cs, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %ss
+	xorw %sp, %sp
+	sti
+	cld
+	movw $msgl, %si
+
+	/*
 	movb $0x2, %ah
 	movb $0x0, %bh
-	movw $0xa0a, %dx
+	movw $0xa00, %dx
 	int $0x10
+	*/
 
 	//put string
-	movw $msg, %bp
-	movw $15, %cx
-	movw $0x07, %bx
-	xorw %ax, %ax
-	movw $0x1301, %ax
+put_msg_loop:
+	lodsb
+	andb %al, %al
+	jz load_4_sectors
+	movb $0xe, %ah
+	movw $0x7, %bx
 	int $0x10
+	jmp put_msg_loop
 
 //load 4 sectors at 0x10000
 load_4_sectors:
@@ -71,6 +72,10 @@ print_error_msg:
 	int $0x10
 
 Error_msg: .ascii "failed to read the sectors, exit"
+msgl:
+		.ascii "Hello Night!!!\n"
+		.byte 0
+
 .org 510
 end_signal :
 	.word 0xaa55
