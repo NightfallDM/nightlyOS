@@ -1,10 +1,12 @@
 //we are now in the real mode so :-)
-.code16
-.global begbss, begtext, begdata, start_boot, start, start_boot
+//.code16
 
 //set the useful msg
 START_SEG = 0x07c0
 LOAD_SEG = 0x1000
+.code16
+.section ".bltext", "ax"
+.global start_boot
 
 start_boot:
 	ljmp $START_SEG, $start
@@ -45,7 +47,7 @@ load_4_sectors:
 	movw $LOAD_SEG, %dx
 	movw %dx, %es
 	movw $0x0, %bx
-	//xorw %dx, %dx
+	xorw %dx, %dx
 	movw $0x80, %dx
 	int $0x13
 	cmpb $0x0, %ah
@@ -56,15 +58,17 @@ load_4_sectors:
 	ljmp $LOAD_SEG, $0x0	
 
 print_error_msg:
+	/*
 	xorw %ax, %ax
 	movb $0x2, %ah
 	movb $0x0, %bh
-	movw $0xb0a, %dx
+	movw $0xb00, %dx
 	int $0x10
+	*/
 
+	movw $Error_msg, %bp
 	movw $START_SEG, %ax
 	movw %ax, %es
-	movw $Error_msg, %bp
 	movw $32, %cx
 	movw $0x07, %bx
 	xorw %ax, %ax
@@ -73,12 +77,10 @@ print_error_msg:
 
 Error_msg: .ascii "failed to read the sectors, exit"
 msgl:
-		.ascii "Hello Night!!!\n"
+		.ascii "Hello Night!!!\r\n"
+		.ascii "\n"
 		.byte 0
 
 .org 510
 end_signal :
 	.word 0xaa55
-
-		
-
