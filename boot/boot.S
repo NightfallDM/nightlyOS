@@ -1,3 +1,6 @@
+// this is a very simple load just load the 4 sector after this sector;
+// fill some field in the headers and then jump to the '_start' in the 'header.S'
+
 //we are now in the real mode so :-)
 //.code16
 
@@ -55,7 +58,11 @@ load_4_sectors:
 	movw $LOAD_SEG, %ax
 	movw %ax, %es
 	movw %ax, %ds
-	ljmp $LOAD_SEG, $0x0	
+
+	# fill the hdr field
+	movw $LOAD_SEG, %bx
+	movb $LOAD_SEG, 498(%bx)
+	ljmp $LOAD_SEG, $512
 
 print_error_msg:
 	/*

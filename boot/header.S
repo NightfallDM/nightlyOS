@@ -1,16 +1,20 @@
 # "setup" part
 
 .code16
-.section ".header", "a"
+.section ".hdrtext", "ax"
+
+.section "hdrfield", "ax"
 .global hdr
 # make the hdr at the end of first 512 byte region
 # to see detail in 'setup.ld'
-
+.org 498
 hdr:
+loaded_real_addr: .word 0 # filled in "boot.S"
 setup_sectors:	.byte 0 # filled in "build.c"
 kernel_size:	.long 0 # filled in build system (every byte)
 kernel_sectors: .byte 0 # filled in "build.c"
 code32_start:	.long 0x100000
+boot_flag:		.word 0xaa55
 
 .global _start
 _start:
@@ -38,12 +42,12 @@ setup_start:
 
 1:
 	# zero bss
-	movw $_bss_start, %di
+	movw $__bss_start, %di
 	movw $_end+3, %cx
 	xorl %eax, %eax
 	subw %di, %cx
 	shrw $2, %cx
 	rep; stosl
 
-	#Jump to "main"
-	calll main
+	# Jump to "main"
+	# calll main
