@@ -54,7 +54,7 @@ load_4_sectors:
 	movw $0x80, %dx
 	int $0x13
 	cmpb $0x0, %ah
-	jne print_error_msg
+	jne print_error_msg_xxx
 	movw $LOAD_SEG, %ax
 	movw %ax, %es
 	movw %ax, %ds
@@ -64,25 +64,22 @@ load_4_sectors:
 	movb $LOAD_SEG, 498(%bx)
 	ljmp $LOAD_SEG, $512
 
+print_error_msg_xxx:
+	movw $Error_msg, %si
 print_error_msg:
-	/*
-	xorw %ax, %ax
-	movb $0x2, %ah
-	movb $0x0, %bh
-	movw $0xb00, %dx
+	lodsb
+	andb %al, %al
+	jz spin
+	movb $0xe, %ah
+	movw $0x7, %bx
 	int $0x10
-	*/
+	jmp put_msg_loop
 
-	movw $Error_msg, %bp
-	movw $START_SEG, %ax
-	movw %ax, %es
-	movw $32, %cx
-	movw $0x07, %bx
-	xorw %ax, %ax
-	movw $0x1301, %ax
-	int $0x10
+spin:
+	jmp spin
 
 Error_msg: .ascii "failed to read the sectors, exit"
+			.byte 0
 msgl:
 		.ascii "Hello Night!!!\r\n"
 		.ascii "\n"

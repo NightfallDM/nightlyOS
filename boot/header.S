@@ -2,12 +2,19 @@
 
 .code16
 .section ".hdrtext", "ax"
+dummy:
+	movw %cs, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %ss
+	xorw %sp, %sp
+	sti
+	cld
 
-.section "hdrfield", "ax"
+.section "hdrfield", "a"
 .global hdr
 # make the hdr at the end of first 512 byte region
 # to see detail in 'setup.ld'
-.org 498
 hdr:
 loaded_real_addr: .word 0 # filled in "boot.S"
 setup_sectors:	.byte 0 # filled in "build.c"
@@ -26,9 +33,22 @@ _start:
 .section "entrytext", "ax"
 setup_start:
 	# %es = %ds
-	movw %ds, %ax
+	movw %cs, %ax
+	movw %ax, %ds
 	movw %ax, %es
+	movw %ax, %ss
+	xorw %sp, %sp
+	sti
 	cld
+	movw $hdr_msg, %si
+
+	//put string
+put_msg_loop:
+	lodsb
+	movb $0xe, %ah
+	movw $0x7, %bx
+	int $0x10
+	jmp put_msg_loop
 	
 	# setup stack
 	movw $0x2000, %dx # 8kB stack
@@ -51,3 +71,7 @@ setup_start:
 
 	# Jump to "main"
 	# calll main
+.section "hdr_data", "a"
+hdr_msg:
+	.ascii "into hdr file\r\n"
+	.byte 0
