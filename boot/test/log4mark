@@ -1,0 +1,5 @@
+1. dump qemu memory layout
+
+2. how to use QEMU Monitor in ternimal
+https://unix.stackexchange.com/questions/426652/connect-to-running-qemu-instance-with-qemu-monitor
+https://qemu.readthedocs.io/en/latest/system/monitor.html
