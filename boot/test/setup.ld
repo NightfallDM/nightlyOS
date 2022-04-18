@@ -9,7 +9,7 @@ SECTIONS
     . = 498;
     .hdrfield       : { *(.hdrfield) }
 	.hdr_data		: { *(.hdr_data) }
-    .entrytext      : { *(.entrytext) }
+    .entrytext      : { *(entrytext) }
 
     . = ALIGN(16);
 	.bss		:

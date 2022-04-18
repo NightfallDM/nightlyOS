@@ -3,3 +3,7 @@
 2. how to use QEMU Monitor in ternimal
 https://unix.stackexchange.com/questions/426652/connect-to-running-qemu-instance-with-qemu-monitor
 https://qemu.readthedocs.io/en/latest/system/monitor.html
+
+3. gdb relative
+search "gdb debug bios interrupt"
+https://www.jianshu.com/p/cca5563bd963 (display)

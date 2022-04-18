@@ -11,7 +11,7 @@ dummy:
 	sti
 	cld
 
-.section "hdrfield", "a"
+.section ".hdrfield", "a"
 .global hdr
 # make the hdr at the end of first 512 byte region
 # to see detail in 'setup.ld'

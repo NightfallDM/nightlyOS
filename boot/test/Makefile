@@ -18,8 +18,10 @@ boot.img: ../boot.S ../header.S
 	objcopy -O binary header.elf header
 	dd if=/dev/zero of=boot.img bs=1024 count=1024
 	dd if=boot of=boot.img conv=notrunc
-	dd if=header of=boot.img bs=1 seek=512 count=47 conv=notrunc
-	dd if=header of=boot.img bs=1 skip=47 seek=1010 count=512 conv=notrunc
+	dd if=header of=boot.img bs=1 seek=512 count=631 conv=notrunc
+	objdump -D boot.elf > boot_dump
+	objdump -D header.elf > header_dump
+	#dd if=header of=boot.img bs=1 skip=47 seek=1010 count=512 conv=notrunc
 	#dd if=vmnight of=vmnight.img seek=1 conv=notrunc
 
 qemu: boot.img
@@ -29,4 +31,4 @@ qemu_step: boot.img
 	qemu-system-i386 boot.img -nographic -s -S -monitor tcp:127.0.0.1:55555,server,nowait;
 
 clean:
-	rm -rf *.o *.elf *.s boot1 boot *.img header
+	rm -rf *.o *.elf *.s boot1 boot *.img header *_dump

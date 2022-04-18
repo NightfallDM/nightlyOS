@@ -38,7 +38,7 @@ put_msg_loop:
 	andb %al, %al
 	jz load_4_sectors
 	movb $0xe, %ah
-	movw $0x7, %bx
+	movw $0x700, %bx
 	int $0x10
 	jmp put_msg_loop
 
@@ -53,15 +53,19 @@ load_4_sectors:
 	xorw %dx, %dx
 	movw $0x80, %dx
 	int $0x13
-	cmpb $0x0, %ah
+	// cmpb $0x0, %ah
+	jc test
+	jnc test
 	jne print_error_msg_xxx
 	movw $LOAD_SEG, %ax
 	movw %ax, %es
 	movw %ax, %ds
 
 	# fill the hdr field
+test:
 	movw $LOAD_SEG, %bx
-	movb $LOAD_SEG, 498(%bx)
+	movb $LOAD_SEG & 0xff, 498(%bx)
+	movb $LOAD_SEG >> 8, 499(%bx)
 	ljmp $LOAD_SEG, $512
 
 print_error_msg_xxx:
