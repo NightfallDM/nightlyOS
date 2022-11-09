@@ -1,0 +1,6 @@
+#ifndef HW_DETECT_MEMORY_H
+#define HW_DETECT_MEMORY_H
+
+
+
+#endif /* HW_DETECT_MEMORY_H */
