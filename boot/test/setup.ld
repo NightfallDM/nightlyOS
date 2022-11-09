@@ -9,7 +9,18 @@ SECTIONS
     . = 498;
     .hdrfield       : { *(.hdrfield) }
 	.hdr_data		: { *(.hdr_data) }
-    .entrytext      : { *(entrytext) }
+    .entrytext      : { *(.entrytext) }
+	.inittext 		: { *(.inittext) }
+	.initdata 		: { *(.initdata) }
+
+	.text 			: { *(.text .text.*) }
+	.text32 		: { *(.text32) }
+
+	. = ALIGN(16);
+	.rodata 		: { *(.rodata*) }
+
+	. = ALIGN(16);
+	.data 			: { *(.data*) }
 
     . = ALIGN(16);
 	.bss		:
@@ -20,4 +31,6 @@ SECTIONS
 	}
 	. = ALIGN(16);
 	_end = .;
+	
+	/DISCARD/		: { *(.note*) }
 }

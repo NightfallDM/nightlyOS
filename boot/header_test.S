@@ -1,16 +1,7 @@
-# "setup" part
+# jump from the boot.S, setup some env for C than jump to main
+# the boot.S only load 4 sectors
 
 .code16
-.section ".hdrtext", "ax"
-dummy:
-	movw %cs, %ax
-	movw %ax, %ds
-	movw %ax, %es
-	movw %ax, %ss
-	xorw %sp, %sp
-	sti
-	cld
-
 .section ".hdrfield", "a"
 .global hdr
 # make the hdr at the end of first 512 byte region
@@ -20,9 +11,7 @@ loaded_real_addr: .word 0 # filled in "boot.S"
 setup_sectors:	.byte 0 # filled in "build.c"
 kernel_size:	.long 0 # filled in build system (every byte)
 kernel_sectors: .byte 0 # filled in "build.c"
-# FIX ME: when have bootloader and can use addr 0x100000
-# code32_start:	.long 0x100000
-code32_start:	.long 0x20000
+code32_start:	.long 0x100000
 boot_flag:		.word 0xaa55
 
 .global _start
@@ -32,9 +21,10 @@ _start:
 1:
 	.long 0 # TODO
 
-.section ".entrytext", "ax"
+.section "entrytext", "ax"
 setup_start:
-	# %es = %ds
+	# setup the segment reg after ljmp
+	# %cs = 0x1000
 	movw %cs, %ax
 	movw %ax, %ds
 	movw %ax, %es
@@ -42,29 +32,15 @@ setup_start:
 	xorw %sp, %sp
 	sti
 	cld
-	# movw $hdr_msg, %si
 
-	//put string
-/*
-put_msg_loop:
-	lodsb
-	movb $0xe, %ah
-	movw $0x7, %bx
-	int $0x10
-	jmp put_msg_loop
-
-*/
-	
 	# setup stack
-	movw $_end + 0x2000, %dx # 8kB heap
-	addw $0x2000, %dx # 8k stack
+	movw $0xffff, %dx
 	movzwl %dx, %esp
-	movw %ax, %ss
 	
 # need this because the bootloader will use %cs = %ds + xxx to jmp to
 # the "_start", it means cs != ds.
-	pushw %ds
-	pushw $1f
+	#pushw %ds
+	#pushw $1f
 
 1:
 	# zero bss
@@ -81,5 +57,3 @@ put_msg_loop:
 hdr_msg:
 	.ascii "into hdr file\r\n"
 	.byte 0
-.section ".init_data", "a"
-

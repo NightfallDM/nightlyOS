@@ -7,3 +7,4 @@ https://qemu.readthedocs.io/en/latest/system/monitor.html
 3. gdb relative
 search "gdb debug bios interrupt"
 https://www.jianshu.com/p/cca5563bd963 (display)
+https://stackoverflow.com/questions/63550156/debugging-xv6-kernel-with-gdb-selected-architecture-i386-is-not-compatible-wit (Selected architecture i386 is not compatible with reported target architecture i386:x86-64)

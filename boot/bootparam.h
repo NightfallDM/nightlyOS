@@ -4,9 +4,13 @@
 #include"types.h"
 
 struct setup_header{
+	u16 load_real_addr;
+	u8 setup_sectors;
 	u32 kernel_size;
-	u32 code32_start;		
-}
+	u8 kernel_sectors;
+	u32 kernel_32_start;
+	u16 boot_flag;		
+}__attribute__((packed));
 
 struct e820_entry{
 	u64 address;

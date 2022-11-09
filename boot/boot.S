@@ -7,6 +7,7 @@
 //set the useful msg
 START_SEG = 0x07c0
 LOAD_SEG = 0x1000
+LOAD_32_SEG = 0x2000
 .code16
 .section ".bltext", "ax"
 .global start_boot
@@ -23,14 +24,12 @@ start:
 	xorw %sp, %sp
 	sti
 	cld
-	movw $msgl, %si
-
-	/*
-	movb $0x2, %ah
-	movb $0x0, %bh
-	movw $0xa00, %dx
+/*
+	xorw %ax, %ax
+	movb $0x13, %al
 	int $0x10
-	*/
+*/
+	movw $msgl, %si
 
 	//put string
 put_msg_loop:
@@ -38,9 +37,23 @@ put_msg_loop:
 	andb %al, %al
 	jz load_4_sectors
 	movb $0xe, %ah
-	movw $0x700, %bx
+	#movw $0x700, %bx
+	xorw %bx, %bx
+	movw $0xb, %bx
 	int $0x10
 	jmp put_msg_loop
+
+// load start_32 code at 0x20000
+	movw $0x20a, %ax
+	xorw %cx, %cx
+	movb $0x6, %cl
+	movw $LOAD_32_SEG, %dx
+	movw %dx, %es
+	xorw %bx, %bx
+	xorw %dx, %dx
+	movw $0x80, %dx
+	int $0x13
+	jnc load_4_sectors
 
 //load 4 sectors at 0x10000
 load_4_sectors:
@@ -54,7 +67,7 @@ load_4_sectors:
 	movw $0x80, %dx
 	int $0x13
 	// cmpb $0x0, %ah
-	jc test
+	# jc test
 	jnc test
 	jne print_error_msg_xxx
 	movw $LOAD_SEG, %ax

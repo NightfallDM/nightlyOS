@@ -2,6 +2,8 @@
 #define _NTDM_BOOT_H
 
 #include"types.h"
+#include "stage2_data.h"
+#include "detect_memory.h"
 
 static inline cli(void){
 	asm volatile("cli"::);
@@ -23,4 +25,5 @@ static inline inb(u16 port){
 	asm volatile("inb %1, %0":"=a"(value):"dN"(port));
 }
 
+void load_kernel();
 #endif // end of "_NTDM_BOOT_H"
