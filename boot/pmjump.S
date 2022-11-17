@@ -5,17 +5,33 @@
 
 .global protected_switch
 protected_switch:
+	xorl %ebx, %ebx
+	movw %cs, %bx
+	shll $4, %ebx
+	addl %ebx, 2f
+	addl %ebx, (gdtr_value+2)
+	jmp 1f
+1:
 	lgdt gdtr_value
 	cli
 	movl %cr0, %eax
 	orl $0x1, %eax
 	movl %eax, %cr0
 
+	# xorl %eax, %eax
+	# xorl %ebx, %ebx
+	# movl (__boot_param+5), %ebx
+	# movl 4(%ebx), %eax
+	# ljmp $(1<<3), *%eax
+	.byte 0x66, 0xea
+2:	.long pm32_code
+	.word (1<<3) 
+
+.code32
+.section ".text32", "ax"
+pm32_code:
 	xorl %eax, %eax
-	xorl %ebx, %ebx
-	movl (__boot_param+5), %ebx
-	movl 4(%ebx), %eax
-	ljmp $(1<<3), *%eax
+	jmp pm32_code
 
 .p2align 4
 gdt:

@@ -97,7 +97,6 @@ void main(void) {
 		set_fs(fs_reg);
 
 		puts("!!!hello_night!!!!!\n");
-		asm volatile("": : :"memory");
-
+		switch_protected_mode();
 		while (1) {}
 }
